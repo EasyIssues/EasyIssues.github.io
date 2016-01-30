@@ -4,9 +4,10 @@
 */
 import angular from 'angular';
 import 'angular-ui-router';
+import 'firebase';
 import Router from './Router';
 import MainController from './controllers/MainController';
 
-angular.module('ripIssues', ['ui.router'])
+angular.module('ripIssues', ['ui.router', 'firebase'])
   .config(Router)
 	.controller('mainCtrl', MainController);

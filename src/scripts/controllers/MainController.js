@@ -4,6 +4,7 @@
   more sense, because most of the code would anyway go to the
   constructor if you would use a class.
 */
+import $firebaseArray from 'angularfire';
 
 export default function($scope) {
 	'ngInject';
