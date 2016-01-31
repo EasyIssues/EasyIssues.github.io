@@ -1,2 +1,13 @@
   <h1>{{app.welcome}}</h1>
   <input type="text" ng-model="app.welcome">
+  <button ng-click="app.sendNew();">Send</button>
+
+  <button ng-click="app.getIssues();">Issues</button>
+
+  <div class="issues">
+    <div ng-repeat="issue in app.issues">
+      <h3><a ng-href="{{issue.url}}">{{issue.title}}</a></h3>
+      <div marked="issue.content">
+      </div>
+    </div>
+  </div>

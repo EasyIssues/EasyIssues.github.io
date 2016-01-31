@@ -3,6 +3,7 @@ var babelify = require('babelify');
 var browserify = require('browserify');
 var vinylSourceStream = require('vinyl-source-stream');
 var vinylBuffer = require('vinyl-buffer');
+var sass = require('gulp-sass');
 
 // Load all gulp plugins into the plugins object.
 var plugins = require('gulp-load-plugins')();
@@ -14,7 +15,9 @@ var src = {
 		all: 'src/scripts/**/*.js',
 		app: 'src/scripts/app.js'
 	},
-	partials: 'src/partials/**'
+	partials: 'src/partials/**',
+	scss: 'src/scss/styles.scss',
+	styles: 'src/scss/*.scss'
 };
 
 var build = 'build/';
@@ -24,7 +27,8 @@ var out = {
 		file: 'app.min.js',
 		folder: build + 'scripts/'
 	},
-	partials: build + 'partials/'
+	partials: build + 'partials/',
+	css: build + 'css/'
 }
 
 gulp.task('html', function() {
@@ -80,6 +84,14 @@ gulp.task('scripts', ['jshint'], function() {
 
 });
 
+gulp.task('sass', function () {
+  gulp.src(src.scss)
+    .pipe(sass({
+      includePaths: require('node-neat').includePaths
+    }))
+    .pipe(gulp.dest(out.css));
+});
+
 gulp.task('serve', ['build', 'watch'], function() {
 	plugins.connect.server({
 		root: build,
@@ -91,9 +103,10 @@ gulp.task('serve', ['build', 'watch'], function() {
 
 gulp.task('watch', function() {
 	gulp.watch(src.vendors, ['vendors']);
+	gulp.watch(src.styles, ['sass']);
 	gulp.watch(src.html, ['html']);
 	gulp.watch(src.scripts.all, ['scripts']);
 })
 
-gulp.task('build', ['scripts', 'html', 'partials', 'vendors']);
+gulp.task('build', ['scripts', 'sass', 'html', 'partials', 'vendors']);
 gulp.task('default', ['serve']);
